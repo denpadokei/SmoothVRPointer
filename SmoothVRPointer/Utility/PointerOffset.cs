@@ -11,10 +11,8 @@ namespace SmoothVRPointer.Utility
 {
     static class PointerOffset
     {
-        public static void Offset(XRNode node, Transform transform)
+        public static void Offset(XRNode node, ref Vector3 pos, ref Quaternion rot)
         {
-            Vector3 tmpPosition = Vector3.zero;
-            Quaternion tmpRotation = Quaternion.identity;
             switch (node) {
                 case XRNode.LeftHand:
                     if (beforeLeftTranceform == null) {
@@ -23,10 +21,10 @@ namespace SmoothVRPointer.Utility
                         beforeLeftTranceform = go.transform;
                         return;
                     }
-                    tmpPosition = Vector3.Lerp(beforeLeftTranceform.position, transform.position, Time.deltaTime * PluginConfig.Instance.OffsetValue);
-                    tmpRotation = Quaternion.Slerp(beforeLeftTranceform.rotation, transform.rotation, Time.deltaTime * PluginConfig.Instance.OffsetValue);
-                    transform.SetPositionAndRotation(tmpPosition, tmpRotation);
-                    beforeLeftTranceform.SetPositionAndRotation(transform.position, transform.rotation);
+                    pos = Vector3.Lerp(beforeLeftTranceform.position, pos, Time.deltaTime * PluginConfig.Instance.OffsetValue);
+                    rot = Quaternion.Slerp(beforeLeftTranceform.rotation, rot, Time.deltaTime * PluginConfig.Instance.OffsetValue);
+                    //transform.SetPositionAndRotation(tmpPosition, tmpRotation);
+                    beforeLeftTranceform.SetPositionAndRotation(pos, rot);
                     break;
                 case XRNode.RightHand:
                     if (beforeRightTranceform == null) {
@@ -35,10 +33,10 @@ namespace SmoothVRPointer.Utility
                         beforeRightTranceform = go.transform;
                         return;
                     }
-                    tmpPosition = Vector3.Lerp(beforeRightTranceform.position, transform.position, Time.deltaTime * PluginConfig.Instance.OffsetValue);
-                    tmpRotation = Quaternion.Slerp(beforeRightTranceform.rotation, transform.rotation, Time.deltaTime * PluginConfig.Instance.OffsetValue);
-                    transform.SetPositionAndRotation(tmpPosition, tmpRotation);
-                    beforeRightTranceform.SetPositionAndRotation(transform.position, transform.rotation);
+                    pos = Vector3.Lerp(beforeRightTranceform.position, pos, Time.deltaTime * PluginConfig.Instance.OffsetValue);
+                    rot = Quaternion.Slerp(beforeRightTranceform.rotation, rot, Time.deltaTime * PluginConfig.Instance.OffsetValue);
+                    //transform.SetPositionAndRotation(tmpPosition, tmpRotation);
+                    beforeRightTranceform.SetPositionAndRotation(pos, rot);
                     break;
                 default:
                     return;

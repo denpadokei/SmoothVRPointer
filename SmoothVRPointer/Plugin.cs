@@ -2,6 +2,8 @@
 using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
+using SiraUtil.Zenject;
+using SmoothVRPointer.Installers;
 using SmoothVRPointer.Patches;
 using System;
 using System.Collections;
@@ -28,7 +30,7 @@ namespace SmoothVRPointer
         /// [Init] methods that use a Constructor or called before regular methods like InitWithConfig.
         /// Only use [Init] with one Constructor.
         /// </summary>
-        public void Init(IPALogger logger, Config conf)
+        public void Init(IPALogger logger, Config conf, Zenjector zenjector)
         {
             Instance = this;
             Log = logger;
@@ -36,6 +38,8 @@ namespace SmoothVRPointer
             this._harmony = new Harmony(HARMONY_ID);
             Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
             Log.Debug("Config loaded");
+
+            zenjector.Install<MenuInstaller>(Location.Menu);
         }
 
         #region BSIPA Config
@@ -61,8 +65,8 @@ namespace SmoothVRPointer
 
         private void SceneManager_activeSceneChanged(Scene arg0, Scene arg1)
         {
-            OculusHelperPatch.CurrentSceneName = arg1.name;
-            OpenVRHelperPatch.CurrentSceneName = arg1.name;
+            //OculusHelperPatch.CurrentSceneName = arg1.name;
+            IVRPlatformHelperPatch.CurrentSceneName = arg1.name;
         }
 
         [OnExit]
@@ -83,7 +87,7 @@ namespace SmoothVRPointer
         public void OnDisable()
         {
             Log.Debug("UnPatch");
-            this._harmony.UnpatchAll(HARMONY_ID);
+            this._harmony?.UnpatchSelf();
         }
     }
 }
