@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using SmoothVRPointer.Configuration;
 using SmoothVRPointer.Utility;
 using System;
@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
